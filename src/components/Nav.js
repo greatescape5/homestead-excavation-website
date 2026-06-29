@@ -19,9 +19,12 @@ const styles = {
     display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none',
   },
   logoImg: {
-    height: 48, width: 48,
+    height: 52,
+    width: 'auto',
     objectFit: 'contain',
-    filter: 'brightness(0) invert(1)',
+    borderRadius: 6,
+    background: '#F0EDE4',
+    padding: 3,
   },
   logoText: { display: 'flex', flexDirection: 'column', gap: 0 },
   logoTop: {
