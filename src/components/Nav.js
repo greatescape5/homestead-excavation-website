@@ -12,19 +12,19 @@ const styles = {
   inner: {
     maxWidth: 1100, margin: '0 auto',
     padding: '0 1.5rem',
-    height: 68,
+    height: 116,
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
   },
   logoWrap: {
     display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none',
   },
   logoImg: {
-    height: 52,
+    height: 104,
     width: 'auto',
     objectFit: 'contain',
-    borderRadius: 6,
+    borderRadius: 8,
     background: '#F0EDE4',
-    padding: 3,
+    padding: 4,
   },
   logoText: { display: 'flex', flexDirection: 'column', gap: 0 },
   logoTop: {
