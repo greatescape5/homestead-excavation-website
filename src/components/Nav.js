@@ -12,10 +12,18 @@ const styles = {
   inner: {
     maxWidth: 1100, margin: '0 auto',
     padding: '0 1.5rem',
-    height: 64,
+    height: 68,
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
   },
-  logo: { display: 'flex', flexDirection: 'column', gap: 0 },
+  logoWrap: {
+    display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none',
+  },
+  logoImg: {
+    height: 48, width: 48,
+    objectFit: 'contain',
+    filter: 'brightness(0) invert(1)',
+  },
+  logoText: { display: 'flex', flexDirection: 'column', gap: 0 },
   logoTop: {
     fontFamily: 'var(--font-display)',
     fontSize: 20, fontWeight: 800, letterSpacing: '0.05em',
@@ -33,19 +41,15 @@ const styles = {
   },
   linkActive: { color: 'var(--gold)' },
   cta: {
-    background: 'var(--gold)',
-    color: 'var(--white)',
-    border: 'none',
-    borderRadius: 4,
-    padding: '8px 18px',
-    fontSize: 13, fontWeight: 600,
-    letterSpacing: '0.04em',
-    textTransform: 'uppercase',
-    transition: 'background 0.15s',
+    background: 'var(--gold)', color: 'var(--white)',
+    border: 'none', borderRadius: 4,
+    padding: '8px 18px', fontSize: 13, fontWeight: 600,
+    letterSpacing: '0.04em', textTransform: 'uppercase',
+    transition: 'background 0.15s', cursor: 'pointer',
   },
   hamburger: {
     display: 'none', background: 'none', border: 'none',
-    color: 'var(--white)', fontSize: 24, padding: 4,
+    color: 'var(--white)', fontSize: 24, padding: 4, cursor: 'pointer',
   },
   mobileMenu: {
     background: 'var(--green-dark)',
@@ -69,6 +73,7 @@ const styles = {
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -84,9 +89,19 @@ export default function Nav() {
   return (
     <nav style={{ ...styles.nav, ...(scrolled ? styles.navScrolled : {}) }} role="navigation" aria-label="Main navigation">
       <div style={styles.inner}>
-        <Link to="/" style={styles.logo} aria-label="Homestead Concrete & Excavation home">
-          <span style={styles.logoTop}>HOMESTEAD</span>
-          <span style={styles.logoSub}>Concrete &amp; Excavation</span>
+        <Link to="/" style={styles.logoWrap} aria-label="Homestead Concrete & Excavation home">
+          {!logoError ? (
+            <img
+              src="/logo.png"
+              alt="Homestead Concrete & Excavation logo"
+              style={styles.logoImg}
+              onError={() => setLogoError(true)}
+            />
+          ) : null}
+          <div style={styles.logoText}>
+            <span style={styles.logoTop}>HOMESTEAD</span>
+            <span style={styles.logoSub}>Concrete &amp; Excavation</span>
+          </div>
         </Link>
 
         {/* Desktop links */}
