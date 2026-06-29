@@ -11,7 +11,7 @@ const headers = (token) => ({
 });
 
 const s = {
-  page: { paddingTop: 64, minHeight: '100vh', background: '#f5f2ec' },
+  page: { paddingTop: 116, minHeight: '100vh', background: '#f5f2ec' },
   loginWrap: { maxWidth: 400, margin: '0 auto', padding: '4rem 1.5rem' },
   loginCard: { background: '#fff', border: '1.5px solid #e0ddd8', borderRadius: 8, padding: '2.5rem' },
   loginHeader: { textAlign: 'center', marginBottom: '2rem' },

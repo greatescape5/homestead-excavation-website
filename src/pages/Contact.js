@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ContactForm from '../components/ContactForm';
 
 const s = {
-  page: { paddingTop: 64 },
+  page: { paddingTop: 116 },
   hero: { background: 'var(--green-dark)', padding: '4rem 1.5rem 3rem' },
   heroInner: { maxWidth: 1100, margin: '0 auto' },
   eyebrow: {

@@ -5,13 +5,13 @@ const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
 const SUPABASE_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 const s = {
-  page: { paddingTop: 64 },
+  page: { paddingTop: 116 },
   hero: { background: 'var(--green-dark)', padding: '4rem 1.5rem 3rem' },
   heroInner: { maxWidth: 1100, margin: '0 auto' },
   eyebrow: { color: 'var(--gold)', fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', borderLeft: '3px solid var(--gold)', paddingLeft: 10, marginBottom: 12 },
   h1: { fontFamily: 'var(--font-display)', fontSize: 'clamp(42px, 7vw, 72px)', fontWeight: 800, color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.03em', lineHeight: 0.95, marginBottom: '1rem' },
   heroPara: { color: '#aaa', fontSize: 16, maxWidth: 480 },
-  filtersBar: { background: 'var(--white)', borderBottom: '1px solid var(--gray-200)', padding: '1rem 1.5rem', position: 'sticky', top: 64, zIndex: 10 },
+  filtersBar: { background: 'var(--white)', borderBottom: '1px solid var(--gray-200)', padding: '1rem 1.5rem', position: 'sticky', top: 116, zIndex: 10 },
   filtersInner: { maxWidth: 1100, margin: '0 auto', display: 'flex', gap: 8, flexWrap: 'wrap' },
   filterBtn: { background: 'var(--white)', border: '1.5px solid var(--gray-200)', borderRadius: 20, padding: '6px 16px', fontSize: 13, fontWeight: 500, color: 'var(--gray-700)', transition: 'all 0.15s', cursor: 'pointer' },
   filterActive: { background: 'var(--green-dark)', border: '1.5px solid var(--green-dark)', color: 'var(--gold)' },

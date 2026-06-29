@@ -19,7 +19,7 @@ const SERVICES = [
 const AREAS = ["Sandpoint", "Athol", "Coeur d'Alene", "Ponderay", "Sagle", "Priest River", "Spirit Lake", "Post Falls"];
 
 const s = {
-  page: { paddingTop: 64 },
+  page: { paddingTop: 116 },
   hero: { background: 'var(--green-dark)', padding: '5rem 1.5rem 4rem', position: 'relative', overflow: 'hidden' },
   heroBg: { position: 'absolute', top: 0, right: '-2rem', bottom: 0, fontFamily: 'var(--font-display)', fontSize: 'clamp(120px, 20vw, 220px)', fontWeight: 800, color: 'rgba(255,255,255,0.025)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', display: 'flex', alignItems: 'center' },
   heroInner: { maxWidth: 1100, margin: '0 auto', position: 'relative' },
