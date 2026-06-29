@@ -14,8 +14,9 @@ const s = {
   divider: { borderColor: '#222', margin: '0 0 1rem' },
   bottom: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 },
   copy: { color: '#555', fontSize: 12 },
-  bottomLinks: { display: 'flex', gap: '1rem' },
+  bottomLinks: { display: 'flex', gap: '1rem', alignItems: 'center' },
   bottomLink: { color: '#555', fontSize: 12 },
+  adminLink: { color: '#2a2a2a', fontSize: 11, textDecoration: 'none', transition: 'color 0.15s' },
 };
 
 export default function Footer() {
@@ -30,10 +31,10 @@ export default function Footer() {
           </div>
           <div>
             <div style={s.colTitle}>Services</div>
-            {['Footings & Foundations','Slabs & Flatwork','Sidewalks & Exterior','Retaining Walls & Stairs','Lot Clearing & Demo','Septic Systems','Dump Truck Hauling'].map(s2 => (
-              <Link key={s2} to="/contact" style={s.colLink}
+            {['Footings & Foundations','Slabs & Flatwork','Sidewalks & Exterior','Retaining Walls & Stairs','Lot Clearing & Demo','Septic Systems','Dump Truck Hauling'].map(sv => (
+              <Link key={sv} to="/contact" style={s.colLink}
                 onMouseEnter={e => e.target.style.color = 'var(--gold)'}
-                onMouseLeave={e => e.target.style.color = '#999'}>{s2}</Link>
+                onMouseLeave={e => e.target.style.color = '#999'}>{sv}</Link>
             ))}
           </div>
           <div>
@@ -54,6 +55,12 @@ export default function Footer() {
           <div style={s.bottomLinks}>
             <Link to="/contact" style={s.bottomLink}>Privacy Policy</Link>
             <Link to="/contact" style={s.bottomLink}>Terms of Use</Link>
+            <Link to="/admin"
+              style={s.adminLink}
+              onMouseEnter={e => e.target.style.color = '#444'}
+              onMouseLeave={e => e.target.style.color = '#2a2a2a'}>
+              ·
+            </Link>
           </div>
         </div>
       </div>
