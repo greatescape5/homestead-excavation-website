@@ -17,7 +17,7 @@ export default function Ticker() {
       <div style={{
         display: 'flex',
         whiteSpace: 'nowrap',
-        animation: 'ticker 30s linear infinite',
+        animation: 'ticker 60s linear infinite',
       }}>
         {items.map((t, i) => (
           <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
