@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { supabase } from '../supabase';
 
 const SERVICES = [
   'Footings & Foundations',
@@ -21,42 +20,38 @@ const s = {
   input: {
     padding: '11px 14px', fontSize: 14, border: '1.5px solid #ddd',
     borderRadius: 4, outline: 'none', transition: 'border-color 0.15s',
-    background: '#fff', color: 'var(--gray-900)',
+    background: '#fff', color: '#1a1a18',
   },
   textarea: {
     padding: '11px 14px', fontSize: 14, border: '1.5px solid #ddd',
     borderRadius: 4, outline: 'none', resize: 'vertical',
     minHeight: 110, transition: 'border-color 0.15s',
-    background: '#fff', color: 'var(--gray-900)', fontFamily: 'var(--font-body)',
+    background: '#fff', color: '#1a1a18', fontFamily: 'Inter, sans-serif',
   },
   select: {
     padding: '11px 14px', fontSize: 14, border: '1.5px solid #ddd',
     borderRadius: 4, outline: 'none', background: '#fff',
-    color: 'var(--gray-900)', appearance: 'none',
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-    backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center',
+    color: '#1a1a18', width: '100%',
   },
   notify: {
     display: 'flex', alignItems: 'flex-start', gap: 8,
     background: '#EAF3DE', border: '1px solid #C0DD97',
     borderRadius: 4, padding: '10px 12px',
   },
-  notifyIcon: { fontSize: 16, marginTop: 1 },
   notifyText: { fontSize: 12, color: '#27500A', lineHeight: 1.5 },
   btn: {
-    background: 'var(--gold)', color: 'var(--white)',
+    background: '#C17F24', color: '#fff',
     border: 'none', borderRadius: 4,
     padding: '14px 28px', fontSize: 14, fontWeight: 700,
     letterSpacing: '0.06em', textTransform: 'uppercase',
     transition: 'background 0.15s, transform 0.1s',
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-start', cursor: 'pointer',
   },
-  btnLoading: { opacity: 0.7, cursor: 'not-allowed' },
   success: {
     background: '#EAF3DE', border: '1px solid #C0DD97',
     borderRadius: 4, padding: '1.5rem', textAlign: 'center',
   },
-  successTitle: { fontSize: 18, fontWeight: 700, color: 'var(--green-dark)', marginBottom: 6 },
+  successTitle: { fontSize: 18, fontWeight: 700, color: '#1C2B1A', marginBottom: 6 },
   successText: { fontSize: 14, color: '#27500A' },
   error: {
     background: '#FEF2F2', border: '1px solid #FECACA',
@@ -66,35 +61,59 @@ const s = {
 };
 
 export default function ContactForm({ compact = false }) {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', details: '' });
-  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [form, setForm] = useState({ name: '', phone: '', email: '', address: '', service: '', details: '' });
+  const [status, setStatus] = useState('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
-  const focusStyle = { borderColor: 'var(--gold)' };
-  const handleFocus = (e) => Object.assign(e.target.style, focusStyle);
+  const handleFocus = (e) => { e.target.style.borderColor = '#C17F24'; };
   const handleBlur = (e) => { e.target.style.borderColor = '#ddd'; };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.phone) { setErrorMsg('Name and phone are required.'); return; }
+    if (!form.name || !form.phone) {
+      setErrorMsg('Name and phone are required.');
+      return;
+    }
     setStatus('loading');
     setErrorMsg('');
 
     try {
-      const { error } = await supabase.from('leads').insert([{
-        name: form.name,
-        phone: form.phone,
-        email: form.email || null,
-        service: form.service || null,
-        details: form.details || null,
-        source: 'website',
-        created_at: new Date().toISOString(),
-      }]);
-      if (error) throw error;
+      const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+      const SUPABASE_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
+
+      if (!SUPABASE_URL || !SUPABASE_KEY) {
+        throw new Error('Configuration error — please contact us directly.');
+      }
+
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email || null,
+          address: form.address || null,
+          service: form.service || null,
+          details: form.details || null,
+          source: 'website',
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('Supabase error:', response.status, errText);
+        throw new Error(`Submit failed: ${response.status}`);
+      }
+
       setStatus('success');
     } catch (err) {
-      console.error(err);
+      console.error('Form error:', err);
       setErrorMsg('Something went wrong. Please call or text us directly at (208) 946-9198.');
       setStatus('error');
     }
@@ -106,7 +125,7 @@ export default function ContactForm({ compact = false }) {
         <div style={s.successTitle}>✓ Request received!</div>
         <p style={s.successText}>
           Chris will reach out shortly — usually within a few hours.<br />
-          For urgent jobs, call or text <a href="tel:+12089469198" style={{ color: 'var(--green-dark)', fontWeight: 600 }}>(208) 946-9198</a>.
+          For urgent jobs, call or text <a href="tel:+12089469198" style={{ color: '#1C2B1A', fontWeight: 600 }}>(208) 946-9198</a>.
         </p>
       </div>
     );
@@ -128,7 +147,25 @@ export default function ContactForm({ compact = false }) {
             onFocus={handleFocus} onBlur={handleBlur} required />
         </div>
       </div>
+
       {!compact && (
+        <div style={s.row} className="form-row">
+          <div style={s.field}>
+            <label style={s.label}>Email</label>
+            <input style={s.input} type="email" placeholder="you@email.com"
+              value={form.email} onChange={set('email')}
+              onFocus={handleFocus} onBlur={handleBlur} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label}>Project Address</label>
+            <input style={s.input} type="text" placeholder="123 Main St, Sandpoint"
+              value={form.address} onChange={set('address')}
+              onFocus={handleFocus} onBlur={handleBlur} />
+          </div>
+        </div>
+      )}
+
+      {compact && (
         <div style={s.field}>
           <label style={s.label}>Email</label>
           <input style={s.input} type="email" placeholder="you@email.com"
@@ -136,6 +173,7 @@ export default function ContactForm({ compact = false }) {
             onFocus={handleFocus} onBlur={handleBlur} />
         </div>
       )}
+
       <div style={s.field}>
         <label style={s.label}>Service needed</label>
         <select style={s.select} value={form.service} onChange={set('service')}
@@ -152,17 +190,17 @@ export default function ContactForm({ compact = false }) {
           onFocus={handleFocus} onBlur={handleBlur} />
       </div>
       <div style={s.notify}>
-        <span style={s.notifyIcon}>⚡</span>
+        <span style={{ fontSize: 16 }}>⚡</span>
         <span style={s.notifyText}>
-          Submissions notify Chris instantly by text and email, and are logged directly as a new lead.
+          Submissions notify Chris instantly by email and are logged directly as a new lead.
         </span>
       </div>
       {errorMsg && <div style={s.error}>{errorMsg}</div>}
       <button type="submit"
-        style={{ ...s.btn, ...(status === 'loading' ? s.btnLoading : {}) }}
+        style={{ ...s.btn, opacity: status === 'loading' ? 0.7 : 1 }}
         disabled={status === 'loading'}
-        onMouseEnter={e => { if (status !== 'loading') e.target.style.background = 'var(--gold-light)'; }}
-        onMouseLeave={e => e.target.style.background = 'var(--gold)'}>
+        onMouseEnter={e => { if (status !== 'loading') e.target.style.background = '#D4962E'; }}
+        onMouseLeave={e => { e.target.style.background = '#C17F24'; }}>
         {status === 'loading' ? 'Sending...' : 'Send Request →'}
       </button>
       <style>{`@media (max-width: 560px) { .form-row { grid-template-columns: 1fr !important; } }`}</style>
